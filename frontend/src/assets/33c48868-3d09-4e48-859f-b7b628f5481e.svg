@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="95" height="85" viewBox="0 0 95 85">
+              <g id="Group_206418" data-name="Group 206418" transform="translate(-1205 -5221)">
+                <circle id="Ellipse_188" data-name="Ellipse 188" cx="26" cy="26" r="26" transform="translate(1224 5221)" fill="#1268f1"></circle>
+                <path id="Icon_core-arrow-top" data-name="Icon core-arrow-top" d="M23.86,8.788,16.2,1.125,8.534,8.788l1.288,1.288,5.464-5.464V28.4h1.821V4.612l5.464,5.464L23.86,8.788Z" transform="translate(1233.803 5232.236)" fill="#fff"></path>
+                <text id="Scroll_to_Top" data-name="Scroll to Top" transform="translate(1206 5299)" fill="#585858" stroke="rgba(0,0,0,0)" stroke-width="1" font-size="16" font-family="NunitoSans-Bold, Nunito Sans" font-weight="700"><tspan x="0" y="0">Scroll to Top</tspan></text>
+              </g>
+            </svg>
