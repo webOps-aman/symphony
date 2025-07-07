@@ -50,6 +50,14 @@ import header_banner5 from './header_banner5.jpeg';
 import header_banner6 from './header_banner6.jpeg';
 import header_banner7 from './header_banner7.png';
 import header_banner8 from './header_banner8.png';
+import header_mob1 from './header_mob1.jpeg';
+import header_mob2 from './header_mob2.jpeg';
+import header_mob3 from './header_mob3.jpeg';
+import header_mob4 from './header_mob4.jpeg';
+import header_mob5 from './header_mob5.jpeg';
+import header_mob6 from './header_mob6.jpeg';
+import header_mob7 from './header_mob7.png';
+import header_mob8 from './header_mob8.jpeg';
 
 import bladeless_tower_fan1 from './bladeless_tower_fan1.png';
 import bladeless_tower_fan2 from './bladeless_tower_fan2.png';
@@ -100,4 +108,20 @@ export const assets = {
     cartIcon,
     hamburgerIcon,
     closeIcon,
+    header_banner1,
+    header_banner2,
+    header_banner3,
+    header_banner4,
+    header_banner5,
+    header_banner6,
+    header_banner7,
+    header_banner8,
+    header_mob1,
+    header_mob2,
+    header_mob3,
+    header_mob4,
+    header_mob5,
+    header_mob6,
+    header_mob7,
+    header_mob8,
 }
