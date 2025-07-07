@@ -33,7 +33,7 @@ import product_img19 from './product_img19.png';
 import product_img20 from './product_img20.png';
 import product_img21 from './product_img21.png';
 import product_img22 from './product_img22.png';
-import product_img23 from './product_img23.png';
+import product_img23 from './product_img23.jpeg';
 import product_img24 from './product_img24.png';
 import product_img25 from './product_img25.png';
 import product_img26 from './product_img26.png';
@@ -80,5 +80,24 @@ import blog_image7 from './blog_image7.jpeg';
 import blog_image8 from './blog_image8.jpeg';
 
 import logo1 from './logo1.png';
+import logo2 from './logo2.png';
+
+import accountIcon from './accountIcon.png';
+import supportIcon from './supportIcon.png';
+import trackingIcon from './trackingIcon.png';
+import cartIcon from './cartIcon.png';
+import hamburgerIcon from './hamburgerIcon.png';
+import closeIcon from './closeIcon.png';
 
 
+
+export const assets = {
+    logo1,
+    logo2,
+    accountIcon,
+    supportIcon,
+    trackingIcon,
+    cartIcon,
+    hamburgerIcon,
+    closeIcon,
+}
