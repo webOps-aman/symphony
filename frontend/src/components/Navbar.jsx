@@ -6,14 +6,10 @@ const Navbar = () => {
   const [sideBar, setSideBar] = useState(false);
 
   const categories = [
-    "Premium Coolers",
-    "BLDC Coolers",
-    "Tower Coolers",
     "Desert Coolers",
+    "Tower Coolers",
     "Industrial Coolers",
-    "Silent Coolers",
-    "Tower & Kitchen Cooling Fans",
-    "Water Heaters",
+    "BLDC Coolers",
   ];
 
   const supportLinks = [
