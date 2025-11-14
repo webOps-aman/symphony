@@ -1,9 +1,16 @@
 import React, { useState } from 'react';
 import { useLocation, Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import { assets } from '../assets/assets.js';
+import CartSidebar from './CartSidebar';
 
 const Navbar = () => {
   const [sideBar, setSideBar] = useState(false);
+  const [cartSidebarOpen, setCartSidebarOpen] = useState(false);
+  
+  // Get cart items count from Redux store
+  const cartItems = useSelector((state) => state.cart.cart);
+  const cartCount = cartItems.reduce((total, item) => total + item.quantity, 0);
 
   const categories = [
     "Desert Coolers",
@@ -13,20 +20,19 @@ const Navbar = () => {
   ];
 
   const supportLinks = [
-        { name: "Contact Us", path: "/pages/contactus" },
-        { name: "Warranty & Service", path: null },
-        { name: "About Us", path: "/pages/aboutus" },
-        { name: "Tracking", path: null },
-        { name: "Login/Sign Up", path: "/account/login" },
-    ];
+    { name: "Contact Us", path: "/pages/contactus" },
+    { name: "Warranty & Service", path: null },
+    { name: "About Us", path: "/pages/aboutus" },
+    { name: "Tracking", path: null },
+    { name: "Login/Sign Up", path: "/account/login" },
+  ];
 
-    const location = useLocation();
-    const currentPath = location.pathname;
+  const location = useLocation();
+  const currentPath = location.pathname;
 
   return (
-    <section>
-      <div className='nav-part w-full'>
-
+    <section className="w-full">
+      <div className="fixed top-0 left-0 w-full z-50">
         {/* ----------announcement start here---------- */}
         <div className='announcement-area py-1 bg-[#538ae9] overflow-hidden whitespace-nowrap'>
           <div className="animate-marquee inline-block text-white">
@@ -40,7 +46,7 @@ const Navbar = () => {
         {/* ----------announcement end here---------- */}
 
         {/* ----------menubar start here---------- */}
-        <div className='menuSection w-full bg-[#f2f4f5]'>
+        <div className='menuSection bg-[#f2f4f5] w-full shadow-md'>
           <div className='menuArea flex justify-between lg:mx-4 py-2'>
 
             <div onClick={() => setSideBar(true)} className='w-11 lg:w-13 h-8 my-2 md:hidden'>
@@ -84,19 +90,37 @@ const Navbar = () => {
             </div>
 
             <div className='iconsPart flex justify-around w-52 lg:w-[20%]'>
-              <div className='w-11 lg:w-13 h-8 my-2'><img src={assets.trackingIcon} alt="tracking" className='w-full h-full object-contain' /></div>
-
-              <div className='w-11 lg:w-13 h-8 my-2'><img src={assets.supportIcon} alt="support" className='w-full h-full object-contain' /></div>
-
-              <div className='w-11 lg:w-13 h-8 my-2'><img src={assets.cartIcon} alt="cart" className='w-full h-full object-contain' /></div>
-
-              <div className='w-11 lg:w-13 h-8 my-2'><img src={assets.accountIcon} alt="account" className='w-full h-full object-contain' /></div>
+              <div className='w-11 lg:w-13 h-8 my-2'>
+                <img src={assets.trackingIcon} alt="tracking" className='w-full h-full object-contain' />
+              </div>
+              <div className='w-11 lg:w-13 h-8 my-2'>
+                <img src={assets.supportIcon} alt="support" className='w-full h-full object-contain' />
+              </div>
               
+              {/* Cart Icon with Badge */}
+              <div 
+                className='w-11 lg:w-13 h-8 my-2 relative cursor-pointer'
+                onClick={() => setCartSidebarOpen(true)}
+              >
+                <img src={assets.cartIcon} alt="cart" className='w-full h-full object-contain' />
+                {cartCount > 0 && (
+                  <div className='absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center animate-pulse'>
+                    {cartCount > 99 ? '99+' : cartCount}
+                  </div>
+                )}
+              </div>
+              
+              <div className='w-11 lg:w-13 h-8 my-2'>
+                <img src={assets.accountIcon} alt="account" className='w-full h-full object-contain' />
+              </div>
             </div>
           </div>
         </div>
         {/* ----------menubar end here---------- */}
       </div>
+
+      {/* ----------spacing div to push content down---------- */}
+      <div className="pt-[110px]"></div>
 
       {/* ----------sidebar start here---------- */}
       <div className={`sidebarPart fixed z-50 top-0 left-0 w-full h-screen bg-white transform transition-transform duration-700 ease-in-out md:hidden ${sideBar ? 'translate-x-0' : '-translate-x-full'}`}>
@@ -116,22 +140,19 @@ const Navbar = () => {
 
         {/* ----------sidebar menu start---------- */}
         <div className='sidebarMenuArea h-[calc(100vh-100px)] overflow-y-auto mt-4'>
-
           <div className='AllCategory mx-4'>
             <p className='font-semibold text-black text-xl'>All Category</p>
 
             {categories.map((cat) => {
               const slug = cat.toLowerCase().replace(/ & /g, "-and-").replace(/\s+/g, "-");
-              const isActive = location.pathname === `/collections/${slug}`;
+              const isActive = location.pathname === `/category/${slug}`;
 
               return (
                 <Link
                   key={cat}
-                  to={`/collections/${slug}`}
+                  to={`/category/${slug}`}
                   onClick={() => setSideBar(false)}
-                  className={`block py-2 my-3 rounded-full pl-5 ${
-                    isActive ? 'bg-blue-800 text-white' : 'bg-[#f2f4f5] text-black'
-                  }`}
+                  className={`block py-2 my-3 rounded-full pl-5 ${isActive ? 'bg-blue-800 text-white' : 'bg-[#f2f4f5] text-black'}`}
                 >
                   {cat}
                 </Link>
@@ -140,31 +161,35 @@ const Navbar = () => {
           </div>
 
           <div className='Support mx-4 mt-6'>
-    <p className='font-semibold text-black text-xl'>Support</p>
+            <p className='font-semibold text-black text-xl'>Support</p>
 
-    {supportLinks.map((item) =>
-      item.path ? (
-        <Link
-          key={item.name}
-          to={item.path}
-          onClick={() => setSideBar(false)}
-          className={`block py-2 my-3 rounded-full pl-5 
-            ${currentPath === item.path ? 'bg-[#1e40af] text-white' : 'bg-[#f2f4f5] text-black'}`}
-        >
-          {item.name}
-        </Link>
-      ) : (
-        <div key={item.name} className='py-2 my-3 rounded-full bg-[#f2f4f5]'>
-          <p className='pl-5'>{item.name}</p>
-        </div>
-      )
-    )}
-  </div>
-
+            {supportLinks.map((item) =>
+              item.path ? (
+                <Link
+                  key={item.name}
+                  to={item.path}
+                  onClick={() => setSideBar(false)}
+                  className={`block py-2 my-3 rounded-full pl-5 ${currentPath === item.path ? 'bg-[#1e40af] text-white' : 'bg-[#f2f4f5] text-black'}`}
+                >
+                  {item.name}
+                </Link>
+              ) : (
+                <div key={item.name} className='py-2 my-3 rounded-full bg-[#f2f4f5]'>
+                  <p className='pl-5'>{item.name}</p>
+                </div>
+              )
+            )}
+          </div>
         </div>
         {/* ----------sidebar menu end---------- */}
       </div>
       {/* ----------sidebar end here---------- */}
+
+      {/* Cart Sidebar */}
+      <CartSidebar 
+        isOpen={cartSidebarOpen} 
+        onClose={() => setCartSidebarOpen(false)} 
+      />
     </section>
   );
 };
