@@ -43,25 +43,26 @@ const HomeSlider = () => {
   const bannerImages = isMobile ? mobileBanners : desktopBanners;
 
   return (
-    <div className="w-full h-[200px] sm:h-[300px] md:h-[450px] lg:h-[600px] xl:h-[700px] md:overflow-hidden">
-      <Swiper
-        spaceBetween={0}
-        slidesPerView={1}
-        loop={true}
-        autoplay={{ delay: 5000, disableOnInteraction: false }}
-        modules={[Autoplay]}
-      >
-        {bannerImages.map((imgSrc, index) => (
-          <SwiperSlide key={index}>
-            <img
-              src={imgSrc}
-              alt={`banner ${index + 1}`}
-              className="w-full h-full object-cover"
-            />
-          </SwiperSlide>
-        ))}
-      </Swiper>
-    </div>
+    <div className="w-full overflow-hidden">
+  <Swiper
+    spaceBetween={0}
+    slidesPerView={1}
+    loop={true}
+    autoplay={{ delay: 5000, disableOnInteraction: false }}
+    modules={[Autoplay]}
+  >
+    {bannerImages.map((imgSrc, index) => (
+      <SwiperSlide key={index}>
+        <img
+          src={imgSrc}
+          alt={`banner ${index + 1}`}
+          className="w-full h-auto object-cover"
+        />
+      </SwiperSlide>
+    ))}
+  </Swiper>
+</div>
+
   );
 };
 
