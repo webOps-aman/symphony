@@ -124,6 +124,19 @@ export const assets = {
     header_mob6,
     header_mob7,
     header_mob8,
+    banner1,
+    banner2,
+    banner3,
+    banner4,
+    banner5,
+    blog_image1,
+    blog_image2,
+    blog_image3,
+    blog_image4,
+    blog_image5,
+    blog_image6,
+    blog_image7,
+    blog_image8
 }
 
 

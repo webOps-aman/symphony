@@ -60,7 +60,7 @@ const ProductDetail = () => {
   const images = Array.isArray(product.image) ? product.image : [product.image];
 
   return (
-    <div className="w-full min-h-screen bg-gray-50">
+    <div className="w-full min-h-screen bg-gray-50 mt-10">
       {/* Toast Notification */}
       {showToast && (
         <div className="fixed top-24 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 animate-slide-in-right">

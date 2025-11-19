@@ -4,7 +4,7 @@ import { Autoplay } from 'swiper/modules';
 import 'swiper/css';
 import { assets } from '../assets/assets';
 
-const HomeSlider = () => {
+const HomeBannerBlogSlider = () => {
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -19,31 +19,28 @@ const HomeSlider = () => {
   }, []);
 
   const desktopBanners = [
-    assets.header_banner1,
-    assets.header_banner2,
-    assets.header_banner3,
-    assets.header_banner4,
-    assets.header_banner5,
-    assets.header_banner6,
-    assets.header_banner7,
-    assets.header_banner8,
+    assets.banner1,
+    assets.banner2,
+    assets.banner3,
+    assets.banner4,
+    assets.banner5,
   ];
 
   const mobileBanners = [
-    assets.header_mob1,
-    assets.header_mob2,
-    assets.header_mob3,
-    assets.header_mob4,
-    assets.header_mob5,
-    assets.header_mob6,
-    assets.header_mob7,
-    assets.header_mob8,
+    assets.blog_image1,
+    assets.blog_image2,
+    assets.blog_image3,
+    assets.blog_image4,
+    assets.blog_image5,
+    assets.blog_image6,
+    assets.blog_image7,
+    assets.blog_image8,
   ];
 
   const bannerImages = isMobile ? mobileBanners : desktopBanners;
 
   return (
-    <div className="w-full overflow-hidden mt-7">
+    <div className="w-full overflow-hidden">
   <Swiper
     spaceBetween={0}
     slidesPerView={1}
@@ -66,4 +63,4 @@ const HomeSlider = () => {
   );
 };
 
-export default HomeSlider;
+export default HomeBannerBlogSlider;

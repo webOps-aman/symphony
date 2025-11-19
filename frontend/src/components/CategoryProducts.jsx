@@ -126,7 +126,7 @@ const CategoryProducts = () => {
   };
 
   return (
-    <div className="w-full min-h-screen bg-white">
+    <div className="w-full min-h-screen bg-white mt-8">
       {/* Toast Notification */}
       {showToast && (
         <div className="fixed top-24 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 animate-slide-in-right">

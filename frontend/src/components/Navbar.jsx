@@ -12,19 +12,12 @@ const Navbar = () => {
   const cartItems = useSelector((state) => state.cart.cart);
   const cartCount = cartItems.reduce((total, item) => total + item.quantity, 0);
 
-  const categories = [
-    "Desert Coolers",
-    "Tower Coolers",
-    "Industrial Coolers",
-    "BLDC Coolers",
-  ];
-
-  const supportLinks = [
-    { name: "Contact Us", path: "/pages/contactus" },
-    { name: "Warranty & Service", path: null },
-    { name: "About Us", path: "/pages/aboutus" },
-    { name: "Tracking", path: null },
-    { name: "Login/Sign Up", path: "/account/login" },
+  const mainMenuItems = [
+    { name: "Home", path: "/" },
+    { name: "Products", path: "/products" },
+    { name: "About Us", path: "/about" },
+    { name: "Contact", path: "/contact" },
+    { name: "Track Order", path: "/track-order" },
   ];
 
   const location = useLocation();
@@ -35,7 +28,7 @@ const Navbar = () => {
       <div className="fixed top-0 left-0 w-full z-50">
         {/* ----------announcement start here---------- */}
         <div className='announcement-area py-1 bg-[#538ae9] overflow-hidden whitespace-nowrap'>
-          <div className="animate-marquee inline-block text-white">
+          <div className="animate-marquee inline-block text-white text-sm">
             <span className="mx-40">3% Off On UPI Payments</span>
             <span className="mx-40">Assured Same Day Dispatch</span>
             <span className="mx-40">6 Months No Cost EMI From 16+ Bank Cards</span>
@@ -46,63 +39,49 @@ const Navbar = () => {
         {/* ----------announcement end here---------- */}
 
         {/* ----------menubar start here---------- */}
-        <div className='menuSection bg-[#f2f4f5] w-full shadow-md'>
-          <div className='menuArea flex justify-between lg:mx-4 py-2'>
+        <div className='menuSection bg-white w-full shadow-md border-b border-gray-200'>
+          <div className='menuArea flex justify-between items-center px-4 lg:px-8 py-3'>
 
-            <div onClick={() => setSideBar(true)} className='w-11 lg:w-13 h-8 my-2 md:hidden'>
-              <img src={assets.hamburgerIcon} alt="menu" className='w-full h-full object-contain' />
+            {/* Mobile Hamburger */}
+            <div onClick={() => setSideBar(true)} className='w-8 h-8 cursor-pointer lg:hidden flex items-center justify-center'>
+              <img src={assets.hamburgerIcon} alt="menu" className='w-6 h-6 object-contain' />
             </div>
 
-            <div className='logo w-32 py-1'>
-              <img src={assets.logo1} alt="logo" />
-            </div>
+            {/* Logo */}
+            <Link to="/" className='logo w-32 lg:w-40'>
+              <img src={assets.logo1} alt="Symphony Logo" className='w-full h-auto' />
+            </Link>
 
-            <div className='middlePart hidden md:flex justify-between md:justify-evenly lg:justify-between w-[60%]'>
-              <div className='category w-[30%] py-1'>
-                <form className="mx-auto">
-                  <select className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-                    <option selected>All Category</option>
-                    {categories.map(cat => (
-                      <option key={cat} value={cat.replace(/\s+/g, '')}>{cat}</option>
-                    ))}
-                  </select>
-                </form>
-              </div>
+            {/* Desktop Navigation Menu */}
+            <nav className='hidden lg:flex items-center space-x-8'>
+              {mainMenuItems.map((item) => (
+                <Link
+                  key={item.name}
+                  to={item.path}
+                  className={`text-sm font-medium transition-colors duration-200 hover:text-[#538ae9] ${
+                    currentPath === item.path 
+                      ? 'text-[#538ae9] border-b-2 border-[#538ae9] pb-1' 
+                      : 'text-gray-700'
+                  }`}
+                >
+                  {item.name}
+                </Link>
+              ))}
+            </nav>
 
-              <div className='searchBarArea w-[60%]'>
-                <form>
-                  <div className="relative py-1">
-                    <input
-                      type="search"
-                      className="block w-full p-3 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
-                      placeholder="Search..."
-                      required
-                    />
-                    <button
-                      type="submit"
-                      className="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 font-medium rounded-lg text-sm px-4 py-2"
-                    >
-                      Search
-                    </button>
-                  </div>
-                </form>
-              </div>
-            </div>
-
-            <div className='iconsPart flex justify-around w-52 lg:w-[20%]'>
-              <div className='w-11 lg:w-13 h-8 my-2'>
-                <img src={assets.trackingIcon} alt="tracking" className='w-full h-full object-contain' />
-              </div>
-              <div className='w-11 lg:w-13 h-8 my-2'>
-                <img src={assets.supportIcon} alt="support" className='w-full h-full object-contain' />
-              </div>
+            {/* Right Icons */}
+            <div className='iconsPart flex items-center space-x-4 lg:space-x-6'>
+              {/* Support Icon */}
+              <Link to="/pages/contactus" className='w-9 h-9 cursor-pointer hover:opacity-70 transition-opacity hidden sm:block'>
+                <img src={assets.supportIcon} alt="Customer Support" className='w-full h-full object-contain' />
+              </Link>
               
               {/* Cart Icon with Badge */}
               <div 
-                className='w-11 lg:w-13 h-8 my-2 relative cursor-pointer'
+                className='w-9 h-9 relative cursor-pointer hover:opacity-70 transition-opacity'
                 onClick={() => setCartSidebarOpen(true)}
               >
-                <img src={assets.cartIcon} alt="cart" className='w-full h-full object-contain' />
+                <img src={assets.cartIcon} alt="Shopping Cart" className='w-full h-full object-contain' />
                 {cartCount > 0 && (
                   <div className='absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center animate-pulse'>
                     {cartCount > 99 ? '99+' : cartCount}
@@ -110,9 +89,10 @@ const Navbar = () => {
                 )}
               </div>
               
-              <div className='w-11 lg:w-13 h-8 my-2'>
-                <img src={assets.accountIcon} alt="account" className='w-full h-full object-contain' />
-              </div>
+              {/* Account Icon */}
+              <Link to="/account/login" className='w-9 h-9 cursor-pointer hover:opacity-70 transition-opacity'>
+                <img src={assets.accountIcon} alt="My Account" className='w-full h-full object-contain' />
+              </Link>
             </div>
           </div>
         </div>
@@ -120,69 +100,66 @@ const Navbar = () => {
       </div>
 
       {/* ----------spacing div to push content down---------- */}
-      <div className="pt-[110px]"></div>
+      <div className="pt-[88px]"></div>
 
-      {/* ----------sidebar start here---------- */}
-      <div className={`sidebarPart fixed z-50 top-0 left-0 w-full h-screen bg-white transform transition-transform duration-700 ease-in-out md:hidden ${sideBar ? 'translate-x-0' : '-translate-x-full'}`}>
-        <div className="sidebarHeader flex py-5 shadow-md">
-          <div className="logoArea mx-auto">
-            <img src={assets.logo1} alt="logo" className="w-32 mx-auto" />
-          </div>
-          <div className="crossIconArea">
-            <img
-              onClick={() => setSideBar(false)}
-              src={assets.closeIcon}
-              alt="close"
-              className="w-11 pr-[20px] mt-[-10px]"
-            />
-          </div>
+      {/* ----------sidebar start here (Mobile)---------- */}
+      <div className={`sidebarPart fixed z-50 top-0 left-0 w-[85%] max-w-sm h-screen bg-white shadow-2xl transform transition-transform duration-300 ease-in-out lg:hidden ${sideBar ? 'translate-x-0' : '-translate-x-full'}`}>
+        {/* Sidebar Header */}
+        <div className="sidebarHeader flex justify-between items-center px-5 py-4 shadow-md bg-[#f8f9fa]">
+          <Link to="/" onClick={() => setSideBar(false)}>
+            <img src={assets.logo1} alt="Symphony Logo" className="w-28" />
+          </Link>
+          <button
+            onClick={() => setSideBar(false)}
+            className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-200 transition-colors"
+          >
+            <img src={assets.closeIcon} alt="Close Menu" className="w-5 h-5" />
+          </button>
         </div>
 
         {/* ----------sidebar menu start---------- */}
-        <div className='sidebarMenuArea h-[calc(100vh-100px)] overflow-y-auto mt-4'>
-          <div className='AllCategory mx-4'>
-            <p className='font-semibold text-black text-xl'>All Category</p>
-
-            {categories.map((cat) => {
-              const slug = cat.toLowerCase().replace(/ & /g, "-and-").replace(/\s+/g, "-");
-              const isActive = location.pathname === `/category/${slug}`;
-
-              return (
-                <Link
-                  key={cat}
-                  to={`/category/${slug}`}
-                  onClick={() => setSideBar(false)}
-                  className={`block py-2 my-3 rounded-full pl-5 ${isActive ? 'bg-blue-800 text-white' : 'bg-[#f2f4f5] text-black'}`}
-                >
-                  {cat}
-                </Link>
-              );
-            })}
+        <div className='sidebarMenuArea h-[calc(100vh-80px)] overflow-y-auto'>
+          {/* Main Menu Items */}
+          <div className='mainMenu px-5 py-4'>
+            <h3 className='font-semibold text-gray-800 text-lg mb-3'>Menu</h3>
+            {mainMenuItems.map((item) => (
+              <Link
+                key={item.name}
+                to={item.path}
+                onClick={() => setSideBar(false)}
+                className={`block py-3 px-4 my-2 rounded-lg transition-all ${
+                  currentPath === item.path 
+                    ? 'bg-[#538ae9] text-white shadow-md' 
+                    : 'bg-gray-50 text-gray-700 hover:bg-gray-100'
+                }`}
+              >
+                {item.name}
+              </Link>
+            ))}
           </div>
 
-          <div className='Support mx-4 mt-6'>
-            <p className='font-semibold text-black text-xl'>Support</p>
-
-            {supportLinks.map((item) =>
-              item.path ? (
-                <Link
-                  key={item.name}
-                  to={item.path}
-                  onClick={() => setSideBar(false)}
-                  className={`block py-2 my-3 rounded-full pl-5 ${currentPath === item.path ? 'bg-[#1e40af] text-white' : 'bg-[#f2f4f5] text-black'}`}
-                >
-                  {item.name}
-                </Link>
-              ) : (
-                <div key={item.name} className='py-2 my-3 rounded-full bg-[#f2f4f5]'>
-                  <p className='pl-5'>{item.name}</p>
-                </div>
-              )
-            )}
+          {/* Additional Links */}
+          <div className='extraLinks px-5 py-4 border-t border-gray-200'>
+            <h3 className='font-semibold text-gray-800 text-lg mb-3'>Quick Links</h3>
+            <Link
+              to="/pages/warranty"
+              onClick={() => setSideBar(false)}
+              className='block py-3 px-4 my-2 rounded-lg bg-gray-50 text-gray-700 hover:bg-gray-100 transition-all'
+            >
+              Warranty & Service
+            </Link>
           </div>
         </div>
         {/* ----------sidebar menu end---------- */}
       </div>
+
+      {/* Sidebar Overlay */}
+      {sideBar && (
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
+          onClick={() => setSideBar(false)}
+        />
+      )}
       {/* ----------sidebar end here---------- */}
 
       {/* Cart Sidebar */}
