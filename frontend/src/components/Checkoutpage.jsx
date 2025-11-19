@@ -9,8 +9,8 @@ const CheckoutPage = () => {
   const [deliveryAddress, setDeliveryAddress] = useState({
     name: 'Amandeep Singh',
     address: 'JA /41D 1st Floor LIG Flats Hari Enclave near Swarg Ashram Mandir',
-    city: 'Hari Nagar',
-    state: 'New Delhi',
+    city: 'New Delhi',
+    state: 'Delhi',
     pincode: '110064',
     phone: '+91 9876543210'
   });
