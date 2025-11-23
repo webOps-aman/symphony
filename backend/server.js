@@ -4,6 +4,7 @@ const cors = require('cors');
 const connectDB = require('./utils/db');
 const connectCloudinary = require('./utils/cloudinary');
 const userRouter = require('./routes/userRoute');
+const productRouter = require('./routes/productRoute');
 require('dotenv').config();
 
 const PORT = process.env.PORT || 5000;
@@ -14,6 +15,7 @@ connectCloudinary();
 
 //user routes
 app.use("/api/v1/user", userRouter);
+app.use("/api/v1/product", productRouter);
 
 
 
