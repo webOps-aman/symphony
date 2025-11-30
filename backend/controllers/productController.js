@@ -1,5 +1,5 @@
 const Product = require("../models/Products");
-const { v2: cloudinary } = require("cloudinary");
+const path = require("path");
 
 const AddProduct = async (req, res) => {
     try {
@@ -20,23 +20,15 @@ const AddProduct = async (req, res) => {
         } = req.body;
 
         // ----------------------------------------
-        // 1. Upload Multiple Images to Cloudinary
+        // 1. Save Multiple Images (Local Storage)
         // ----------------------------------------
         let imageUrls = [];
 
         if (req.files && req.files.length > 0) {
             for (const file of req.files) {
-                const uploadResult = await new Promise((resolve, reject) => {
-                    cloudinary.uploader.upload_stream(
-                        { folder: "products" },
-                        (err, result) => {
-                            if (err) reject(err);
-                            else resolve(result);
-                        }
-                    ).end(file.buffer);   // <-- IMPORTANT
-                });
-
-                imageUrls.push(uploadResult.secure_url);
+                // LOCAL FILE PATH (EXAMPLE: uploads/1738001201-product.jpg)
+                const filePath = `uploads/${file.filename}`;
+                imageUrls.push(filePath);
             }
         }
 
