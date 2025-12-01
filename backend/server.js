@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const path = require("path");
 const cors = require('cors');
 const connectDB = require('./utils/db');
 const connectCloudinary = require('./utils/cloudinary');
@@ -38,7 +39,11 @@ app.use(
 );
 
 
-
+// Serve uploads folder at http://localhost:5000/uploads/file.png
+app.use(
+  "/uploads",
+  express.static(path.join(__dirname, "uploads"))
+);
 
 
 connectCloudinary();

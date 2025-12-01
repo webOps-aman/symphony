@@ -14,15 +14,15 @@ export const addProduct = async (formData) => {
 }
 
 
-// // Get All Products API
-// export const getAllProducts = async () => {
-//   try {
-//     const response = await axiosInstance.get('/product/allproducts');
-//     return response.data;
-//   } catch (error) {
-//     throw error;
-//   }
-// };
+// Get All Products API
+export const getAllProducts = async () => {
+  try {
+    const response = await axiosInstance.get('/product/listproduct');
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
 
 // // Get Single Product API
 // export const getProductById = async (productId) => {

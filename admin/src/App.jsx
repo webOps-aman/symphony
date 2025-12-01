@@ -1,13 +1,10 @@
-// ============================================
-// FILE: src/App.jsx
-// ============================================
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Sidebar from './components/Sidebar';
 import AddProduct from './pages/AddProduct';
-
+import Products from './pages/Products';  // 👈 Import
 
 const App = () => {
   const { isOpen } = useSelector((state) => state.sidebar);
@@ -19,7 +16,6 @@ const App = () => {
         <Navbar />
         <Sidebar />
         
-        {/* Main Content Area */}
         <main className={`pt-16 transition-all duration-300 ${isOpen ? 'lg:pl-64' : 'lg:pl-20'}`}>
           <Routes>
             <Route path="/" element={
@@ -28,6 +24,7 @@ const App = () => {
                 <p className="text-gray-500">Your dashboard content will go here...</p>
               </div>
             } />
+            <Route path="/products" element={<Products />} />
             <Route path="/add-product" element={<AddProduct />} />
           </Routes>
         </main>
