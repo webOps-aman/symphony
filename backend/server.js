@@ -10,7 +10,37 @@ require('dotenv').config();
 const PORT = process.env.PORT || 5000;
 
 app.use(express.json());
-app.use(cors());
+
+const allowedOrigins = [
+  "http://localhost:5173",
+  "http://localhost:5174",
+];
+
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      // Allow requests with no origin (Postman, server-to-server)
+      if (!origin) return callback(null, true);
+
+      if (allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("CORS blocked: Not allowed by server"));
+      }
+    },
+
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+
+    allowedHeaders: ["Content-Type", "Authorization"],
+
+    credentials: true,
+  })
+);
+
+
+
+
+
 connectCloudinary();
 
 //user routes
