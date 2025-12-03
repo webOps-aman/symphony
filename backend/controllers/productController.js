@@ -1,4 +1,5 @@
 const Product = require("../models/Products");
+const fs = require("fs");
 const path = require("path");
 
 const AddProduct = async (req, res) => {
@@ -91,19 +92,45 @@ const ListProduct = async (req, res) => {
 
 const RemoveProduct = async (req, res) => {
     try {
-        await Product.findByIdAndDelete(req.body.id);
+        const productId = req.params.id; // ⭐ URL params se id
+        console.log(productId)
+        // 1. Fetch product
+        const product = await Product.findById(productId);
+        if (!product) {
+            return res.status(404).json({
+                status: "Error",
+                message: "Product not found"
+            });
+        }
+
+        // 2. Delete images (single/multiple)
+        if (product.image && product.image.length > 0) {
+            product.image.forEach((imgPath) => {
+                const fullPath = path.join(__dirname, "..", imgPath);
+
+                if (fs.existsSync(fullPath)) {
+                    fs.unlinkSync(fullPath);
+                    console.log("Deleted Image:", fullPath);
+                }
+            });
+        }
+
+        // 3. Delete product
+        await Product.findByIdAndDelete(productId);
+
         res.status(200).json({
             status: "Success",
-            message: "Product remove Successfully"
-        })
+            message: "Product + Images Deleted Successfully"
+        });
+
     } catch (error) {
-        console.log(error.message);
+        console.log("Error deleting product:", error);
         return res.status(500).json({
             status: "Error",
             message: error.message
         });
     }
-}
+};
 
 const SingleProductInfo = async (req, res) => {
     try {

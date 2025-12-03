@@ -1,4 +1,4 @@
-import axiosInstance from "./axiosConfig";
+import axiosInstance from "./apiConfig";
 
 export const addProduct = async (formData) => {
     try {
@@ -18,6 +18,18 @@ export const addProduct = async (formData) => {
 export const getAllProducts = async () => {
   try {
     const response = await axiosInstance.get('/product/listproduct');
+    console.log(response)
+    return response.data;
+    
+  } catch (error) {
+    throw error;
+  }
+};
+
+// Delete Product API
+export const deleteProduct = async (productId) => {
+  try {
+    const response = await axiosInstance.delete(`/product/removeproduct/${productId}`);
     return response.data;
   } catch (error) {
     throw error;
@@ -48,12 +60,3 @@ export const getAllProducts = async () => {
 //   }
 // };
 
-// // Delete Product API
-// export const deleteProduct = async (productId) => {
-//   try {
-//     const response = await axiosInstance.delete(`/product/delete/${productId}`);
-//     return response.data;
-//   } catch (error) {
-//     throw error;
-//   }
-// };

@@ -6,7 +6,10 @@ const productRouter = express.Router();
 
 productRouter.route('/addproduct').post(upload.array('image', 10), AddProduct);
 productRouter.route('/listproduct').get(ListProduct);
-productRouter.route('/removeproduct').post(RemoveProduct);
+// productRouter.route('/filter/rating/:rating').get(ListProduct);
+// productRouter.route('/filter/category/:cat').get(ListProduct);
+// productRouter.route('/filter/category/price').get(ListProduct);
+productRouter.route('/removeproduct/:id').delete(RemoveProduct);
 productRouter.route('/singleproductinfo').get(SingleProductInfo);
 
 module.exports = productRouter;
