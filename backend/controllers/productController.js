@@ -76,11 +76,59 @@ const AddProduct = async (req, res) => {
 
 const ListProduct = async (req, res) => {
     try {
-        const productsList = await Product.find({});
+        let query = {};
+
+        // -------------------------
+        // 1️⃣ CATEGORY FILTER
+        // -------------------------
+        if (req.query.category) {
+            query.category = req.query.category;
+        }
+
+        // -------------------------
+        // 2️⃣ RATING FILTER
+        // -------------------------
+        if (req.query.rating) {
+            query.rating = { $gte: Number(req.query.rating) };
+        }
+
+        // -------------------------
+        // 3️⃣ PRICE RANGE FILTER
+        // -------------------------
+        if (req.query.minPrice) {
+            query.price = { ...query.price, $gte: Number(req.query.minPrice) };
+        }
+
+        if (req.query.maxPrice) {
+            query.price = { ...query.price, $lte: Number(req.query.maxPrice) };
+        }
+
+        // -------------------------
+        // 4️⃣ SEARCH FILTER
+        // -------------------------
+        if (req.query.search) {
+            query.name = { $regex: req.query.search, $options: "i" };
+        }
+
+        // -------------------------
+        // 5️⃣ SORTING
+        // -------------------------
+        let sortQuery = {};
+        if (req.query.sort) {
+            sortQuery[req.query.sort] = req.query.order === "desc" ? -1 : 1;
+        }
+
+        // -------------------------
+        // 6️⃣ FINAL QUERY (FIND + SORT)
+        // -------------------------
+        const productsList = await Product.find(query).sort(sortQuery);
+
         res.status(200).json({
             status: "Success",
+            count: productsList.length,
             data: productsList,
-        })
+        });
+
     } catch (error) {
         console.log(error.message);
         return res.status(500).json({
@@ -88,7 +136,8 @@ const ListProduct = async (req, res) => {
             message: error.message
         });
     }
-}
+};
+
 
 const RemoveProduct = async (req, res) => {
     try {
@@ -155,5 +204,5 @@ module.exports = {
     AddProduct,
     ListProduct,
     RemoveProduct,
-    SingleProductInfo
+    SingleProductInfo,
 }
