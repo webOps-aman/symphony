@@ -36,15 +36,15 @@ export const deleteProduct = async (productId) => {
   }
 };
 
-// // Get Single Product API
-// export const getProductById = async (productId) => {
-//   try {
-//     const response = await axiosInstance.get(`/product/${productId}`);
-//     return response.data;
-//   } catch (error) {
-//     throw error;
-//   }
-// };
+// Get Single Product API
+export const getProductById = async (productId) => {
+  try {
+    const response = await axiosInstance.get(`/product/${productId}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
 
 // // Update Product API
 // export const updateProduct = async (productId, formData) => {

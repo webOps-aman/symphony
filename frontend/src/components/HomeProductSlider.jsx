@@ -1,21 +1,54 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { addToCart } from '../store/cartSlice';
+import { getAllProducts } from '../api/productApi';
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 
-// IMPORT PRODUCTS FROM assets.js
-import { products } from "../assets/assets";  
-
 const HomeProductSlider = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [toastMessage, setToastMessage] = useState('');
   const [showToast, setShowToast] = useState(false);
+
+  const BASE_URL = 'http://localhost:5000';
+
+  // Fetch Products from API
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        setLoading(true);
+        const response = await getAllProducts();
+        console.log('API Response:', response);
+        
+        // Extract products array from response
+        let productsData = [];
+        if (response && response.data && Array.isArray(response.data)) {
+          productsData = response.data;
+        } else if (Array.isArray(response)) {
+          productsData = response;
+        }
+        
+        setProducts(productsData);
+        setError(null);
+      } catch (err) {
+        console.error('Error fetching products:', err);
+        setError('Failed to load products');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, []);
 
   // Filter only products having rating >= 4.2
   const topRatedProducts = products
@@ -72,6 +105,93 @@ const HomeProductSlider = () => {
       navigate(`/product/${product._id}`);
     }
   };
+
+  // Get image URL with base path
+  const getImageUrl = (image) => {
+    if (Array.isArray(image) && image.length > 0) {
+      return `${BASE_URL}/${image[0]}`;
+    }
+    return image ? `${BASE_URL}/${image}` : '/placeholder-image.jpg';
+  };
+
+  // Loading State
+  if (loading) {
+    return (
+      <div className="categories_area w-full py-16 bg-gradient-to-b from-blue-50 to-white">
+        <div className="w-[90%] mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold text-gray-800 mb-3">
+              Top 10 Rated Coolers
+            </h2>
+            <p className="text-gray-600 text-lg">
+              Explore the best-performing coolers with ratings above 4.2★.
+            </p>
+          </div>
+          <div className="flex justify-center items-center py-20">
+            <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-blue-600"></div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Error State
+  if (error) {
+    return (
+      <div className="categories_area w-full py-16 bg-gradient-to-b from-blue-50 to-white">
+        <div className="w-[90%] mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold text-gray-800 mb-3">
+              Top 10 Rated Coolers
+            </h2>
+          </div>
+          <div className="flex flex-col items-center justify-center py-20">
+            <svg
+              className="w-16 h-16 text-red-500 mb-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+            <p className="text-red-600 text-lg font-medium mb-4">{error}</p>
+            <button
+              onClick={() => window.location.reload()}
+              className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+            >
+              Retry
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Empty State
+  if (topRatedProducts.length === 0) {
+    return (
+      <div className="categories_area w-full py-16 bg-gradient-to-b from-blue-50 to-white">
+        <div className="w-[90%] mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold text-gray-800 mb-3">
+              Top 10 Rated Coolers
+            </h2>
+            <p className="text-gray-600 text-lg">
+              Explore the best-performing coolers with ratings above 4.2★.
+            </p>
+          </div>
+          <div className="flex flex-col items-center justify-center py-20">
+            <p className="text-gray-600 text-lg">No top-rated products available at the moment.</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="categories_area w-full py-16 bg-gradient-to-b from-blue-50 to-white">
@@ -135,18 +255,23 @@ const HomeProductSlider = () => {
                 >
 
                   {/* Discount Badge */}
-                  <div className="absolute top-2 left-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded z-10">
-                    {Math.round(
-                      ((item.originalPrice - item.price) / item.originalPrice) * 100
-                    )}% OFF
-                  </div>
+                  {item.originalPrice && (
+                    <div className="absolute top-2 left-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded z-10">
+                      {Math.round(
+                        ((item.originalPrice - item.price) / item.originalPrice) * 100
+                      )}% OFF
+                    </div>
+                  )}
 
                   {/* Product Image */}
                   <div className="relative bg-gray-50 p-4 h-56 flex items-center justify-center overflow-hidden">
                     <img
-                      src={item.image[0]}
+                      src={getImageUrl(item.image)}
                       alt={item.name}
                       className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
+                      onError={(e) => {
+                        e.target.src = '/placeholder-image.jpg';
+                      }}
                     />
                   </div>
 
@@ -159,7 +284,7 @@ const HomeProductSlider = () => {
                     {/* Rating */}
                     <div className="flex items-center gap-2 mb-2">
                       <div className="flex items-center gap-1 px-2 py-0.5 bg-green-600 text-white text-xs rounded">
-                        <span className="font-semibold">{item.seller.rating}</span>
+                        <span className="font-semibold">{item.seller?.rating || '4.2'}</span>
                         <span>★</span>
                       </div>
                       <span className="text-xs text-gray-500">(Top Rated)</span>
@@ -171,9 +296,11 @@ const HomeProductSlider = () => {
                         ₹{item.price.toLocaleString()}
                       </span>
 
-                      <span className="text-sm text-gray-500 line-through">
-                        ₹{item.originalPrice.toLocaleString()}
-                      </span>
+                      {item.originalPrice && (
+                        <span className="text-sm text-gray-500 line-through">
+                          ₹{item.originalPrice.toLocaleString()}
+                        </span>
+                      )}
                     </div>
                   </div>
                 </div>

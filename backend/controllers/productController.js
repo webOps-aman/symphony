@@ -182,22 +182,33 @@ const RemoveProduct = async (req, res) => {
 };
 
 const SingleProductInfo = async (req, res) => {
-    try {
-        const productId = req.body.id;
-        console.log(productId)
-        const productInfo = await Product.findById(productId);
-        res.status(200).json({
-            status: "Success",
-            data: productInfo
-        })
-    } catch (error) {
-        console.log(error.message);
-        return res.status(500).json({
-            status: "Error",
-            message: error.message
-        });
+  try {
+    const productId = req.params.id;
+
+    if (!productId) {
+      return res.status(400).json({ message: "Product ID is required" });
     }
-}
+
+    const productInfo = await Product.findById(productId);
+
+    if (!productInfo) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    res.status(200).json({
+      status: "Success",
+      data: productInfo
+    });
+
+  } catch (error) {
+    console.log(error.message);
+    return res.status(500).json({
+      status: "Error",
+      message: error.message
+    });
+  }
+};
+
 
 
 module.exports = {
